@@ -15,5 +15,6 @@ module.exports = {
   },
   isAdmin: function (role) {
     return role === 'admin';
-  }
+  },
+  eq: (a, b) => a === b
 };

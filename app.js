@@ -31,17 +31,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Handlebars Helpers
-const { formatDate, select, isAdmin } = require('./helpers/hbs');
+const helpers = require('./helpers/hbs');
 
 // Handlebars
 app.engine(
   '.hbs',
   engine({
-    helpers: {
-      formatDate,
-      select,
-      isAdmin
-    },
+    helpers,
     defaultLayout: 'main',
     extname: '.hbs'
   })
@@ -94,11 +90,11 @@ async function seedAdmin() {
     role:     'admin'
   });
   await admin.save();
-  console.log(`🛠️  Admin seeded → user: admin | pass: ${randomPass}`);
+  console.log(`🛠️  Cuenta Administracion → Usuario: admin | Contraseña: ${randomPass} (SOLO SE MOSTRARÁ UNA VEZ!)`);
 }
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Servidor iniciado en puerto ${PORT}`);
+  console.log(`📢  Servidor iniciado en puerto ${PORT}`);
 });
