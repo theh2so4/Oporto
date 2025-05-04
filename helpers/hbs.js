@@ -16,5 +16,34 @@ module.exports = {
   isAdmin: function (role) {
     return role === 'admin';
   },
-  eq: (a, b) => a === b
+  eq: function (a, b) {
+    return a === b;
+  },
+  ne: function (a, b) {
+    return a !== b;
+  },
+  lt: function (a, b) {
+    return a < b;
+  },
+  lte: function (a, b) {
+    return a <= b;
+  },
+  gt: function (a, b) {
+    return a > b;
+  },
+  gte: function (a, b) {
+    return a >= b;
+  },
+  multiply: function(a, b) {
+    return a * b;
+  },
+  subtract: function(a, b) {
+    return a - b;
+  },
+  not: function(v) {
+    return !v;
+  },
+  and: function(a, b) {
+    return a && b;
+  }
 };
