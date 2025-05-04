@@ -1,0 +1,64 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Clientes
+        </h2>
+      </div>
+      <div class="col-auto ms-auto d-print-none">
+        <div class="btn-list">
+          <a href="/clientes/add" class="btn btn-primary d-none d-sm-inline-block">
+            <i class="ti ti-plus"></i>
+            Nuevo Cliente
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Deuda</th>
+                <th>Fecha de registro</th>
+                <th class="w-1"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each clientes}}
+              <tr>
+                <td>{{nombre}}</td>
+                <td>{{telefono}}</td>
+                <td>
+                  {{#if (gt deuda 0)}}
+                  <span class="text-danger">€{{deuda}}</span>
+                  {{else}}
+                  €0
+                  {{/if}}
+                </td>
+                <td>{{formatDate createdAt 'DD/MM/YYYY'}}</td>
+                <td>
+                  <div class="btn-list flex-nowrap">
+                    <a href="/clientes/edit/{{_id}}" class="btn btn-sm btn-primary">Editar</a>
+                    <form action="/clientes/{{_id}}?_method=DELETE" method="POST" class="d-inline">
+                      <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este cliente?')">Eliminar</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

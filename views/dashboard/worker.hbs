@@ -1,0 +1,131 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Dashboard
+        </h2>
+        <div class="text-muted mt-1">{{fecha}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-deck row-cards">
+      <div class="col-sm-6 col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Clientes atendidos hoy</div>
+            </div>
+            <div class="h1 mb-3">{{clientesAtendidos}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Hora actual</div>
+            </div>
+            <div class="h1 mb-3" id="reloj">00:00:00</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Fecha</div>
+            </div>
+            <div class="h1 mb-3">{{fecha}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Productos entregados hoy</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-vcenter card-table">
+                <thead>
+                  <tr>
+                    <th>Tipo de producto</th>
+                    <th>Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each productosEntregados}}
+                  <tr>
+                    <td>{{@key}}</td>
+                    <td>{{this}}</td>
+                  </tr>
+                  {{else}}
+                  <tr>
+                    <td colspan="2" class="text-center">No hay productos entregados hoy</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Mis entregas de hoy</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-vcenter card-table">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Hora</th>
+                    <th class="w-1"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each ventasRepartidor}}
+                  <tr>
+                    <td>{{cliente.nombre}}</td>
+                    <td>{{formatDate createdAt 'HH:mm'}}</td>
+                    <td>
+                      <a href="/ventas/{{_id}}" class="btn btn-sm btn-primary">Ver</a>
+                    </td>
+                  </tr>
+                  {{else}}
+                  <tr>
+                    <td colspan="3" class="text-center">No hay entregas hoy</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Reloj en tiempo real
+  function actualizarReloj() {
+    const ahora = new Date();
+    const horas = ahora.getHours().toString().padStart(2, '0');
+    const minutos = ahora.getMinutes().toString().padStart(2, '0');
+    const segundos = ahora.getSeconds().toString().padStart(2, '0');
+    document.getElementById('reloj').textContent = `${horas}:${minutos}:${segundos}`;
+  }
+  
+  setInterval(actualizarReloj, 1000);
+  actualizarReloj();
+</script>

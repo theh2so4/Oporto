@@ -1,0 +1,118 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Dashboard
+        </h2>
+        <div class="text-muted mt-1">{{fecha}}</div>
+      </div>
+      <div class="col-auto ms-auto d-print-none">
+        <div class="btn-list">
+          <a href="/ventas/add" class="btn btn-primary d-none d-sm-inline-block">
+            <i class="ti ti-plus"></i>
+            Nueva Venta
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-deck row-cards">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Ventas hoy</div>
+            </div>
+            <div class="h1 mb-3">{{totalVentas}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Clientes nuevos hoy</div>
+            </div>
+            <div class="h1 mb-3">{{clientesHoy}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Productos en stock</div>
+            </div>
+            <div class="h1 mb-3">{{productos.length}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Total clientes</div>
+            </div>
+            <div class="h1 mb-3">{{clientes.length}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Ventas de hoy</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-vcenter card-table">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Repartidor</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Hora</th>
+                    <th class="w-1"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each ventasHoy}}
+                  <tr>
+                    <td>{{cliente.nombre}}</td>
+                    <td>{{repartidor.nombre}}</td>
+                    <td>€{{total}}</td>
+                    <td>
+                      {{#if (eq estado 'pagado')}}
+                      <span class="badge bg-success">Pagado</span>
+                      {{else if (eq estado 'deuda')}}
+                      <span class="badge bg-warning">Deuda</span>
+                      {{else}}
+                      <span class="badge bg-danger">Pendiente</span>
+                      {{/if}}
+                    </td>
+                    <td>{{formatDate createdAt 'HH:mm'}}</td>
+                    <td>
+                      <a href="/ventas/{{_id}}" class="btn btn-sm btn-primary">Ver</a>
+                    </td>
+                  </tr>
+                  {{else}}
+                  <tr>
+                    <td colspan="6" class="text-center">No hay ventas hoy</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

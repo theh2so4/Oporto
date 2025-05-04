@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Ventas</title>
+  <!-- Tabler CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.22.0/tabler-icons.min.css">
+  <style>
+    .required::after {
+      content: " *";
+      color: red;
+    }
+  </style>
+</head>
+<body class="theme-light">
+  <div class="page">
+    {{#if user}}
+      {{> _header}}
+      <div class="page-wrapper">
+        <div class="page-body">
+          <div class="container-xl">
+            {{{body}}}
+          </div>
+        </div>
+        {{> _footer}}
+      </div>
+    {{else}}
+      <div class="page-wrapper">
+        <div class="page-body">
+          <div class="container-xl">
+            {{{body}}}
+          </div>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+
+  <!-- Tabler JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Custom JS -->
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Detalles de Venta
+        </h2>
+        <div class="text-muted mt-1">{{formatDate venta.createdAt 'LL'}}</div>
+      </div>
+      <div class="col-auto ms-auto d-print-none">
+        <div class="btn-list">
+          <button type="button" class="btn btn-primary d-none d-sm-inline-block" onclick="window.print();">
+            <i class="ti ti-printer"></i>
+            Imprimir
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="card card-lg">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <p class="h3">Cliente</p>
+            <address>
+              {{venta.cliente.nombre}}<br>
+              {{#if venta.cliente.telefono}}
+              Tel: {{venta.cliente.telefono}}
+              {{/if}}
+            </address>
+          </div>
+          <div class="col-6 text-end">
+            <p class="h3">Detalles</p>
+            <address>
+              Creado por: {{venta.creador.nombre}}<br>
+              Repartidor: {{venta.repartidor.nombre}}<br>
+              Fecha: {{formatDate venta.createdAt 'DD/MM/YYYY HH:mm'}}
+            </address>
+          </div>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table table-transparent table-responsive">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 1%">#</th>
+                <th>Producto</th>
+                <th class="text-center">Tipo</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-end">Precio</th>
+                <th class="text-end">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each venta.detalles}}
+              <tr>
+                <td class="text-center">{{@index}}</td>
+                <td>
+                  <p class="strong mb-1">{{producto.nombre}}</p>
+                  <div class="text-muted">Stock: {{stockAntes}} → {{stockDespues}}</div>
+                </td>
+                <td class="text-center">{{producto.tipo}}</td>
+                <td class="text-center">{{cantidad}}</td>
+                <td class="text-end">€{{precio}}</td>
+                <td class="text-end">€{{multiply precio cantidad}}</td>
+              </tr>
+              {{/each}}
+              <tr>
+                <td colspan="5" class="strong text-end">Total</td>
+                <td class="text-end">€{{venta.total}}</td>
+              </tr>
+              <tr>
+                <td colspan="5" class="strong text-end">Pagado</td>
+                <td class="text-end">€{{venta.pagado}}</td>
+              </tr>
+              <tr>
+                <td colspan="5" class="strong text-end">Pendiente</td>
+                <td class="text-end">€{{subtract venta.total venta.pagado}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="row mt-4">
+          <div class="col-6">
+            <p class="h3">Pagos realizados</p>
+            <div class="table-responsive">
+              <table class="table table-vcenter">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Método</th>
+                    <th>Monto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each venta.pagos}}
+                  <tr>
+                    <td>{{formatDate fecha 'DD/MM/YYYY HH:mm'}}</td>
+                    <td>
+                      {{#if (eq metodo 'efectivo')}}
+                      Efectivo
+                      {{else if (eq metodo 'bizum')}}
+                      Bizum
+                      {{else}}
+                      Cajero
+                      {{/if}}
+                    </td>
+                    <td>€{{monto}}</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-6">
+            <p class="h3">Estado</p>
+            <div class="text-muted">
+              {{#if (eq venta.estado 'pagado')}}
+              <span class="badge bg-success">Pagado</span>
+              {{else if (eq venta.estado 'deuda')}}
+              <span class="badge bg-warning">Deuda</span>
+              {{else}}
+              <span class="badge bg-danger">Pendiente</span>
+              {{/if}}
+            </div>
+            
+            {{#if (and (isAdmin ../user.role) (not (eq venta.estado 'pagado')))}}
+            <div class="mt-4">
+              <p class="h3">Registrar pago adicional</p>
+              <form action="/ventas/{{venta._id}}/pago" method="POST">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="form-label required">Método de pago</label>
+                      <select name="metodo_pago" class="form-select" required>
+                        <option value="efectivo">Efectivo</option>
+                        <option value="bizum">Bizum</option>
+                        <option value="cajero">Cajero</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label class="form-label required">Monto (€)</label>
+                      <input type="number" name="monto_pago" class="form-control" step="0.01" min="0.01" value="{{subtract venta.total venta.pagado}}" required>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar Pago</button>
+              </form>
+            </div>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

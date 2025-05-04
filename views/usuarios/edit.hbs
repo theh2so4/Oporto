@@ -1,0 +1,53 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Editar Usuario
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-cards">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            {{#if error}}
+            <div class="alert alert-danger" role="alert">
+              {{error}}
+            </div>
+            {{/if}}
+            <form action="/usuarios/{{usuario._id}}?_method=PUT" method="POST">
+              <div class="form-group mb-3">
+                <label class="form-label required">Nombre</label>
+                <input type="text" name="nombre" class="form-control" value="{{usuario.nombre}}" required>
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">Usuario</label>
+                <input type="text" class="form-control" value="{{usuario.username}}" disabled>
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">Nueva Contraseña (dejar en blanco para mantener la actual)</label>
+                <input type="password" name="password" class="form-control">
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label required">Rol</label>
+                <select name="role" class="form-select" required>
+                  <option value="admin" {{#if (eq usuario.role 'admin')}}selected{{/if}}>Administrador</option>
+                  <option value="worker" {{#if (eq usuario.role 'worker')}}selected{{/if}}>Trabajador</option>
+                </select>
+              </div>
+              <div class="form-footer">
+                <a href="/usuarios" class="btn btn-link">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

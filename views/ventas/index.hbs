@@ -1,0 +1,67 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Ventas
+        </h2>
+      </div>
+      {{#if (isAdmin user.role)}}
+      <div class="col-auto ms-auto d-print-none">
+        <div class="btn-list">
+          <a href="/ventas/add" class="btn btn-primary d-none d-sm-inline-block">
+            <i class="ti ti-plus"></i>
+            Nueva Venta
+          </a>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Repartidor</th>
+                <th>Total</th>
+                <th>Pagado</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th class="w-1"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each ventas}}
+              <tr>
+                <td>{{cliente.nombre}}</td>
+                <td>{{repartidor.nombre}}</td>
+                <td>€{{total}}</td>
+                <td>€{{pagado}}</td>
+                <td>
+                  {{#if (eq estado 'pagado')}}
+                  <span class="badge bg-success">Pagado</span>
+                  {{else if (eq estado 'deuda')}}
+                  <span class="badge bg-warning">Deuda</span>
+                  {{else}}
+                  <span class="badge bg-danger">Pendiente</span>
+                  {{/if}}
+                </td>
+                <td>{{formatDate createdAt 'DD/MM/YYYY HH:mm'}}</td>
+                <td>
+                  <a href="/ventas/{{_id}}" class="btn btn-sm btn-primary">Ver</a>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,221 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Nueva Venta
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-cards">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <form action="/ventas" method="POST" id="ventaForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label class="form-label required">Cliente</label>
+                    <select name="cliente_id" id="cliente_id" class="form-select" required>
+                      <option value="">Seleccionar cliente</option>
+                      <option value="nuevo">Nuevo cliente</option>
+                      {{#each clientes}}
+                      <option value="{{_id}}">{{nombre}}</option>
+                      {{/each}}
+                    </select>
+                  </div>
+                  <div class="form-group mb-3" id="nuevoClienteDiv" style="display: none;">
+                    <label class="form-label required">Nombre del nuevo cliente</label>
+                    <input type="text" name="cliente_nuevo" id="cliente_nuevo" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label class="form-label required">Repartidor</label>
+                    <select name="repartidor_id" class="form-select" required>
+                      <option value="">Seleccionar repartidor</option>
+                      {{#each usuarios}}
+                      <option value="{{_id}}">{{nombre}}</option>
+                      {{/each}}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label required">Productos</label>
+                <div id="productos-container">
+                  <div class="row mb-2 producto-row">
+                    <div class="col-md-6">
+                      <select name="producto_ids" class="form-select producto-select" required>
+                        <option value="">Seleccionar producto</option>
+                        {{#each productos}}
+                        <option value="{{_id}}" data-precio="{{precio}}" data-stock="{{stock}}">{{nombre}} - €{{precio}} ({{stock}} en stock)</option>
+                        {{/each}}
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <input type="number" name="cantidades" class="form-control cantidad-input" placeholder="Cantidad" min="1" required>
+                    </div>
+                    <div class="col-md-2">
+                      <button type="button" class="btn btn-danger remove-producto" style="display: none;">
+                        <i class="ti ti-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" id="add-producto" class="btn btn-sm btn-secondary mt-2">
+                  <i class="ti ti-plus"></i> Agregar otro producto
+                </button>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label class="form-label required">Método de pago</label>
+                    <select name="metodo_pago" class="form-select" required>
+                      <option value="">Seleccionar método</option>
+                      <option value="efectivo">Efectivo</option>
+                      <option value="bizum">Bizum</option>
+                      <option value="cajero">Cajero</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label class="form-label required">Monto pagado (€)</label>
+                    <input type="number" name="monto_pago" id="monto_pago" class="form-control" step="0.01" min="0" required>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label class="form-label">Total de la venta</label>
+                    <div class="input-group">
+                      <span class="input-group-text">€</span>
+                      <input type="text" id="total_venta" class="form-control" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-footer">
+                <a href="/ventas" class="btn btn-link">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Registrar Venta</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Manejar selección de cliente
+    const clienteSelect = document.getElementById('cliente_id');
+    const nuevoClienteDiv = document.getElementById('nuevoClienteDiv');
+    const nuevoClienteInput = document.getElementById('cliente_nuevo');
+    
+    clienteSelect.addEventListener('change', function() {
+      if (this.value === 'nuevo') {
+        nuevoClienteDiv.style.display = 'block';
+        nuevoClienteInput.setAttribute('required', 'required');
+      } else {
+        nuevoClienteDiv.style.display = 'none';
+        nuevoClienteInput.removeAttribute('required');
+      }
+    });
+    
+    // Agregar producto
+    const productosContainer = document.getElementById('productos-container');
+    const addProductoBtn = document.getElementById('add-producto');
+    
+    addProductoBtn.addEventListener('click', function() {
+      const productoRow = document.querySelector('.producto-row').cloneNode(true);
+      productoRow.querySelector('.cantidad-input').value = '';
+      productoRow.querySelector('.producto-select').value = '';
+      productoRow.querySelector('.remove-producto').style.display = 'block';
+      productosContainer.appendChild(productoRow);
+      
+      // Agregar evento para eliminar producto
+      productoRow.querySelector('.remove-producto').addEventListener('click', function() {
+        productoRow.remove();
+        calcularTotal();
+      });
+      
+      // Agregar eventos para calcular total
+      productoRow.querySelector('.producto-select').addEventListener('change', calcularTotal);
+      productoRow.querySelector('.cantidad-input').addEventListener('input', calcularTotal);
+    });
+    
+    // Mostrar botón eliminar en la primera fila si hay más de una
+    document.querySelector('.producto-row .remove-producto').addEventListener('click', function() {
+      this.closest('.producto-row').remove();
+      calcularTotal();
+    });
+    
+    // Calcular total
+    function calcularTotal() {
+      let total = 0;
+      const filas = document.querySelectorAll('.producto-row');
+      
+      filas.forEach(fila => {
+        const select = fila.querySelector('.producto-select');
+        const cantidad = fila.querySelector('.cantidad-input').value;
+        
+        if (select.value && cantidad) {
+          const option = select.options[select.selectedIndex];
+          const precio = parseFloat(option.dataset.precio);
+          total += precio * parseInt(cantidad);
+        }
+      });
+      
+      document.getElementById('total_venta').value = total.toFixed(2);
+      
+      // Sugerir monto de pago igual al total
+      document.getElementById('monto_pago').value = total.toFixed(2);
+    }
+    
+    // Agregar eventos iniciales para calcular total
+    document.querySelectorAll('.producto-select').forEach(select => {
+      select.addEventListener('change', calcularTotal);
+    });
+    
+    document.querySelectorAll('.cantidad-input').forEach(input => {
+      input.addEventListener('input', calcularTotal);
+    });
+    
+    // Validar stock antes de enviar
+    document.getElementById('ventaForm').addEventListener('submit', function(e) {
+      const filas = document.querySelectorAll('.producto-row');
+      let stockValido = true;
+      
+      filas.forEach(fila => {
+        const select = fila.querySelector('.producto-select');
+        const cantidad = parseInt(fila.querySelector('.cantidad-input').value);
+        
+        if (select.value && cantidad) {
+          const option = select.options[select.selectedIndex];
+          const stock = parseInt(option.dataset.stock);
+          
+          if (cantidad > stock) {
+            alert(`No hay suficiente stock para ${option.text}. Stock disponible: ${stock}`);
+            stockValido = false;
+          }
+        }
+      });
+      
+      if (!stockValido) {
+        e.preventDefault();
+      }
+    });
+  });
+</script>

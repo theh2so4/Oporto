@@ -1,0 +1,70 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Productos
+        </h2>
+      </div>
+      {{#if (isAdmin user.role)}}
+      <div class="col-auto ms-auto d-print-none">
+        <div class="btn-list">
+          <a href="/productos/add" class="btn btn-primary d-none d-sm-inline-block">
+            <i class="ti ti-plus"></i>
+            Nuevo Producto
+          </a>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                {{#if (isAdmin user.role)}}
+                <th class="w-1"></th>
+                {{/if}}
+              </tr>
+            </thead>
+            <tbody>
+              {{#each productos}}
+              <tr>
+                <td>{{nombre}}</td>
+                <td>{{tipo}}</td>
+                <td>€{{precio}}</td>
+                <td>
+                  {{#if (lt stock 10)}}
+                  <span class="text-danger">{{stock}}</span>
+                  {{else}}
+                  {{stock}}
+                  {{/if}}
+                </td>
+                {{#if (isAdmin ../user.role)}}
+                <td>
+                  <div class="btn-list flex-nowrap">
+                    <a href="/productos/edit/{{_id}}" class="btn btn-sm btn-primary">Editar</a>
+                    <form action="/productos/{{_id}}?_method=DELETE" method="POST" class="d-inline">
+                      <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
+                    </form>
+                  </div>
+                </td>
+                {{/if}}
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

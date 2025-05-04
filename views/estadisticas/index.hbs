@@ -1,0 +1,88 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Estadísticas
+        </h2>
+        <div class="text-muted mt-1">Últimos {{periodo}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-deck row-cards">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Total Ventas</div>
+            </div>
+            <div class="h1 mb-3">{{totalVentas}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="subheader">Total Vendido</div>
+            </div>
+            <div class="h1 mb-3">€{{totalVendido}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Estadísticas por Usuario</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-vcenter card-table">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Rol</th>
+                    <th>Ventas Creadas</th>
+                    <th>Ventas Repartidas</th>
+                    <th>Total Vendido</th>
+                    <th>Clientes Atendidos</th>
+                    <th>Productos por Tipo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each estadisticasUsuarios}}
+                  <tr>
+                    <td>{{nombre}}</td>
+                    <td>
+                      {{#if (eq role 'admin')}}
+                      <span class="badge bg-primary">Administrador</span>
+                      {{else}}
+                      <span class="badge bg-secondary">Trabajador</span>
+                      {{/if}}
+                    </td>
+                    <td>{{ventasCreadas}}</td>
+                    <td>{{ventasRepartidas}}</td>
+                    <td>€{{totalVendido}}</td>
+                    <td>{{clientesAtendidos}}</td>
+                    <td>
+                      {{#each productosPorTipo}}
+                        <div><strong>{{@key}}:</strong> {{this}}</div>
+                      {{/each}}
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

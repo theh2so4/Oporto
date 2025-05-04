@@ -1,0 +1,50 @@
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          Nuevo Producto
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-cards">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            {{#if error}}
+            <div class="alert alert-danger" role="alert">
+              {{error}}
+            </div>
+            {{/if}}
+            <form action="/productos" method="POST">
+              <div class="form-group mb-3">
+                <label class="form-label required">Nombre</label>
+                <input type="text" name="nombre" class="form-control" value="{{producto.nombre}}" required>
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label required">Tipo</label>
+                <input type="text" name="tipo" class="form-control" value="{{producto.tipo}}" required>
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label required">Precio (€)</label>
+                <input type="number" name="precio" class="form-control" value="{{producto.precio}}" step="0.01" min="0" required>
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">Stock inicial</label>
+                <input type="number" name="stock" class="form-control" value="{{producto.stock}}" min="0">
+              </div>
+              <div class="form-footer">
+                <a href="/productos" class="btn btn-link">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
