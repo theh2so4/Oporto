@@ -1,7 +1,6 @@
 {
-  "name": "sistema-ventas",
+  "name": "oporto",
   "version": "1.0.0",
-  "description": "Sistema de administración de ventas con autenticación y gestión de productos",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
