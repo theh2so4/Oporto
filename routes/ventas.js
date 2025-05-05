@@ -284,24 +284,47 @@ router.post('/:id/estado', ensureAdmin, async (req, res) => {
   }
 });
 
-// @desc    Eliminar una venta
+// @desc    Eliminar una venta y restablecer el stock, actualizar deuda del cliente
 // @route   DELETE /ventas/:id
 router.delete('/:id', ensureAdmin, async (req, res) => {
   try {
     const ventaId = req.params.id;
-    
-    // Eliminar la venta
-    const venta = await Venta.findByIdAndDelete(ventaId);
-    
+
+    // Buscar la venta para obtener los detalles de los productos, cantidades, y pagos
+    const venta = await Venta.findById(ventaId).populate('detalles.producto').populate('cliente');
+
     if (!venta) {
       return res.status(404).send('Venta no encontrada');
     }
-    
-    // Redirigir a la lista de ventas después de eliminar
-    res.redirect('/ventas');
+
+    // Restablecer el stock de los productos
+    for (const detalle of venta.detalles) {
+      const producto = detalle.producto; // Producto completo, populated
+      producto.stock += detalle.cantidad;  // Restablecer el stock al valor original
+      await producto.save();
+    }
+
+    // Eliminar la venta
+    await Venta.findByIdAndDelete(ventaId);
+
+    // Actualizar la deuda del cliente
+    const cliente = venta.cliente;  // Cliente que hizo la compra
+    const deudaRestante = cliente.deuda - venta.pagado;  // Restar el monto pagado
+    cliente.deuda = Math.max(0, deudaRestante);  // Asegurarse de que la deuda no sea negativa
+    await cliente.save();
+
+    // Obtener el referer (la página desde donde se hizo la solicitud)
+    const referer = req.get('Referer');
+
+    // Redirigir dependiendo de la ruta de origen
+    if (referer && referer.includes('/ventas')) {
+      return res.redirect('/ventas');
+    } else {
+      return res.redirect('/dashboard');
+    }
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error al eliminar la venta');
+    res.status(500).send('Error al eliminar la venta, restablecer el stock y actualizar la deuda del cliente');
   }
 });
 
