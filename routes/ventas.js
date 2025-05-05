@@ -284,4 +284,25 @@ router.post('/:id/estado', ensureAdmin, async (req, res) => {
   }
 });
 
+// @desc    Eliminar una venta
+// @route   DELETE /ventas/:id
+router.delete('/:id', ensureAdmin, async (req, res) => {
+  try {
+    const ventaId = req.params.id;
+    
+    // Eliminar la venta
+    const venta = await Venta.findByIdAndDelete(ventaId);
+    
+    if (!venta) {
+      return res.status(404).send('Venta no encontrada');
+    }
+    
+    // Redirigir a la lista de ventas después de eliminar
+    res.redirect('/ventas');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error al eliminar la venta');
+  }
+});
+
 module.exports = router;
