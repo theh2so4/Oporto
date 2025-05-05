@@ -69,7 +69,8 @@ router.post('/', ensureAuth, ensureAdmin, async (req, res) => {
       producto_ids,
       cantidades,
       metodo_pago,
-      monto_pago
+      monto_pago,
+      notas // Capture the notas field
     } = req.body;
     
     // Validar campos básicos
@@ -168,7 +169,8 @@ router.post('/', ensureAuth, ensureAdmin, async (req, res) => {
       pagos,
       total,
       pagado,
-      estado
+      estado,
+      notas // Save the notas field
     });
     
     res.redirect('/ventas');
@@ -200,7 +202,7 @@ router.get('/:id', ensureAuth, async (req, res) => {
     }
     
     res.render('ventas/show', {
-      venta
+      venta // The sale details, including notas
     });
   } catch (err) {
     console.error(err);

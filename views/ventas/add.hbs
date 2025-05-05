@@ -59,7 +59,7 @@
                       </select>
                     </div>
                     <div class="col-md-4">
-                      <input type="number" name="cantidades" class="form-control cantidad-input" placeholder="Cantidad" min="1" required>
+                      <input type="number" name="cantidades" class="form-control cantidad-input" placeholder="Cantidad" min="1" value="1" required>
                     </div>
                     <div class="col-md-2">
                       <button type="button" class="btn btn-danger remove-producto" style="display: none;">
@@ -103,6 +103,13 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label class="form-label">Notas</label>
+                    <textarea name="notas" class="form-control" placeholder="Añadir notas sobre la venta" rows="3"></textarea>
+                  </div>
+                </div>
               </div>
               
               <div class="form-footer">
@@ -140,7 +147,7 @@
     
     addProductoBtn.addEventListener('click', function() {
       const productoRow = document.querySelector('.producto-row').cloneNode(true);
-      productoRow.querySelector('.cantidad-input').value = '';
+      productoRow.querySelector('.cantidad-input').value = 1;  // Default to 1
       productoRow.querySelector('.producto-select').value = '';
       productoRow.querySelector('.remove-producto').style.display = 'block';
       productosContainer.appendChild(productoRow);

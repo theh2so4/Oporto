@@ -28,16 +28,16 @@
             <address>
               {{venta.cliente.nombre}}<br>
               {{#if venta.cliente.telefono}}
-              Tel: {{venta.cliente.telefono}}
+              Tel: <strong>{{venta.cliente.telefono}}</strong>
               {{/if}}
             </address>
           </div>
           <div class="col-6 text-end">
             <p class="h3">Detalles</p>
             <address>
-              Creado por: {{venta.creador.nombre}}<br>
-              Repartidor: {{venta.repartidor.nombre}}<br>
-              Fecha: {{formatDate venta.createdAt 'DD/MM/YYYY HH:mm'}}
+              Creado por: <strong>{{venta.creador.nombre}}</strong><br>
+              Repartidor: <strong>{{venta.repartidor.nombre}}</strong><br>
+              Fecha: <strong>{{formatDate venta.createdAt 'DD/MM/YYYY HH:mm'}}</strong>
             </address>
           </div>
         </div>
@@ -60,7 +60,7 @@
                 <td class="text-center">{{@index}}</td>
                 <td>
                   <p class="strong mb-1">{{producto.nombre}}</p>
-                  <div class="text-muted">Stock: {{stockAntes}} → {{stockDespues}}</div>
+                  <div class="text-muted">Stock: <strong>{{stockAntes}}</strong> → <strong>{{stockDespues}}</strong></div>
                 </td>
                 <td class="text-center">{{producto.tipo}}</td>
                 <td class="text-center">{{cantidad}}</td>
@@ -123,6 +123,18 @@
             </div>
           </div>
         </div>
+        {{#if venta.notas}}
+          <div class="row mt-4">
+            <div class="col-12">
+              <p class="h3">Notas</p>
+              <div class="card">
+                <div class="card-body">
+                  <p>{{venta.notas}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/if}}
         {{#if (isAdmin user.role)}}
         <div class="mt-4 text-center">
           <p class="h3">Cambiar estado</p>

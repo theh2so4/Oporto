@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); 
 
 const DetalleVentaSchema = new mongoose.Schema({
   producto: {
@@ -71,6 +71,10 @@ const VentaSchema = new mongoose.Schema({
     type: String,
     enum: ['pendiente', 'pagado', 'deuda'],
     default: 'pendiente'
+  },
+  notas: {
+    type: String,
+    default: ''
   },
   createdAt: {
     type: Date,
