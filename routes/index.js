@@ -50,7 +50,10 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
           $gte: hoy.toDate(),
           $lt: manana.toDate()
         }
-      }).populate('cliente').lean();
+      })
+      .populate('cliente')
+      .populate('detalles.producto')
+      .lean();      
       
       // Agrupar productos entregados por tipo
       const productosEntregados = {};

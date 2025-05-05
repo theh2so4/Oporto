@@ -45,5 +45,8 @@ module.exports = {
   },
   and: function(a, b) {
     return a && b;
+  },
+  json: function(context) {
+    return JSON.stringify(context, null, 2);
   }
 };

@@ -63,8 +63,8 @@
                 <tbody>
                   {{#each productosEntregados}}
                   <tr>
-                    <td>{{@key}}</td>
-                    <td>{{this}}</td>
+                    <td><div><strong>{{@key}}</strong></td>
+                    <td><div><strong>{{this}}</strong></td>
                   </tr>
                   {{else}}
                   <tr>
@@ -95,8 +95,8 @@
                 <tbody>
                   {{#each ventasRepartidor}}
                   <tr>
-                    <td>{{cliente.nombre}}</td>
-                    <td>{{formatDate createdAt 'HH:mm'}}</td>
+                    <td><div><strong>{{cliente.nombre}}</strong></td>
+                    <td><div><strong>{{formatDate createdAt 'HH:mm'}}</strong></td>
                     <td>
                       <a href="/ventas/{{_id}}" class="btn btn-sm btn-primary">Ver</a>
                     </td>
