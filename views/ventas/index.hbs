@@ -57,7 +57,12 @@
                 <td>{{formatDate createdAt 'DD/MM/YYYY HH:mm'}}</td>
                 {{#if (isAdmin ../user.role)}}
                 <td>
-                  <a href="/ventas/{{_id}}" class="btn btn-sm btn-primary">Ver</a>
+                  <div class="btn-list flex-nowrap">
+                    <a href="/ventas/{{_id}}" class="btn btn-sm btn-primary">Ver</a>
+                    <form action="/clientes/{{_id}}?_method=DELETE" method="POST" class="d-inline">
+                      <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este cliente?')">Eliminar</button>
+                    </form>
+                  </div>
                 </td>
                 {{/if}}
               </tr>
