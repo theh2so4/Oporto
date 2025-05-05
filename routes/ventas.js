@@ -259,4 +259,29 @@ router.post('/:id/pago', ensureAuth, ensureAdmin, async (req, res) => {
   }
 });
 
+// @desc    Change the state of a sale
+// @route   POST /ventas/:id/estado
+router.post('/:id/estado', ensureAdmin, async (req, res) => {
+  try {
+    const ventaId = req.params.id;
+    const nuevoEstado = req.body.estado;
+
+    // Find the sale and update its state
+    const venta = await Venta.findById(ventaId);
+    if (!venta) {
+      return res.status(404).send('Venta no encontrada');
+    }
+
+    // Update the state of the sale
+    venta.estado = nuevoEstado;
+    await venta.save();
+
+    // Redirect back to the sale's details page
+    res.redirect(`/ventas/${ventaId}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error al actualizar el estado de la venta');
+  }
+});
+
 module.exports = router;
