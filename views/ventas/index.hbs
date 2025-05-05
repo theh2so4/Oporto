@@ -33,7 +33,9 @@
                 <th>Pagado</th>
                 <th>Estado</th>
                 <th>Fecha</th>
+                {{#if (isAdmin user.role)}}
                 <th class="w-1"></th>
+                {{/if}}
               </tr>
             </thead>
             <tbody>
@@ -53,9 +55,11 @@
                   {{/if}}
                 </td>
                 <td>{{formatDate createdAt 'DD/MM/YYYY HH:mm'}}</td>
+                {{#if (isAdmin ../user.role)}}
                 <td>
                   <a href="/ventas/{{_id}}" class="btn btn-sm btn-primary">Ver</a>
                 </td>
+                {{/if}}
               </tr>
               {{/each}}
             </tbody>
