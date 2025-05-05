@@ -6,6 +6,7 @@
           Usuarios
         </h2>
       </div>
+      {{#if (isAdmin user.role)}}
       <div class="col-auto ms-auto d-print-none">
         <div class="btn-list">
           <a href="/usuarios/add" class="btn btn-primary d-none d-sm-inline-block">
@@ -14,6 +15,7 @@
           </a>
         </div>
       </div>
+      {{/if}}
     </div>
   </div>
 </div>

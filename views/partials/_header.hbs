@@ -60,6 +60,7 @@
               </span>
             </a>
           </li>
+          {{#if (isAdmin user.role)}}
           <li class="nav-item">
             <a class="nav-link" href="/clientes">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -70,6 +71,7 @@
               </span>
             </a>
           </li>
+          {{/if}}
           <li class="nav-item">
             <a class="nav-link" href="/ventas">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
