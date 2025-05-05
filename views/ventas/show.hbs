@@ -101,13 +101,7 @@
                   <tr>
                     <td>{{formatDate fecha 'DD/MM/YYYY HH:mm'}}</td>
                     <td>
-                      {{#if (eq metodo 'efectivo')}}
-                      Efectivo
-                      {{else if (eq metodo 'bizum')}}
-                      Bizum
-                      {{else}}
-                      Cajero
-                      {{/if}}
+                      {{#if (eq metodo 'efectivo')}}Efectivo{{else if (eq metodo 'bizum')}}Bizum{{else}}Cajero{{/if}}
                     </td>
                     <td>€{{monto}}</td>
                   </tr>
@@ -127,35 +121,26 @@
               <span class="badge bg-danger">Pendiente</span>
               {{/if}}
             </div>
-            
-            {{#if (and (isAdmin ../user.role) (not (eq venta.estado 'pagado')))}}
-            <div class="mt-4">
-              <p class="h3">Registrar pago adicional</p>
-              <form action="/ventas/{{venta._id}}/pago" method="POST">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group mb-3">
-                      <label class="form-label required">Método de pago</label>
-                      <select name="metodo_pago" class="form-select" required>
-                        <option value="efectivo">Efectivo</option>
-                        <option value="bizum">Bizum</option>
-                        <option value="cajero">Cajero</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group mb-3">
-                      <label class="form-label required">Monto (€)</label>
-                      <input type="number" name="monto_pago" class="form-control" step="0.01" min="0.01" value="{{subtract venta.total venta.pagado}}" required>
-                    </div>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Registrar Pago</button>
-              </form>
-            </div>
-            {{/if}}
           </div>
         </div>
+        {{#if (isAdmin user.role)}}
+        <div class="mt-4 text-center">
+          <p class="h3">Cambiar estado</p>
+          <form action="/ventas/{{venta._id}}/estado" method="POST">
+            <div class="form-group mb-3">
+              <label for="estado" class="form-label">Nuevo Estado</label>
+              <div class="d-flex justify-content-center">
+                <select name="estado" id="estado" class="form-select" required style="max-width: 300px;">
+                  <option value="pagado" {{#if (eq venta.estado 'pagado')}}selected{{/if}}>Pagado</option>
+                  <option value="deuda" {{#if (eq venta.estado 'deuda')}}selected{{/if}}>Deuda</option>
+                  <option value="pendiente" {{#if (eq venta.estado 'pendiente')}}selected{{/if}}>Pendiente</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+          </form>
+        </div>
+        {{/if}}
       </div>
     </div>
   </div>
