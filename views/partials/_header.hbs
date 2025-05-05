@@ -13,11 +13,15 @@
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
           <div class="d-none d-xl-block ps-2">
             <div>{{user.nombre}}</div>
-            <div class="mt-1 small text-muted">{{user.role}}</div>
+            {{#if (isAdmin user.role)}}
+              <div class="mt-1 small text-muted">Administrador</div>
+            {{else}}
+              <div class="mt-1 small text-muted">Trabajador</div>
+            {{/if}}
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-          <a href="/auth/logout" class="dropdown-item">Cerrar sesión</a>
+          <a href="/auth/logout" class="dropdown-item">Cerrar Sesión</a>
         </div>
       </div>
     </div>
@@ -34,7 +38,7 @@
                 <i class="ti ti-home"></i>
               </span>
               <span class="nav-link-title">
-                Dashboard
+                Panel
               </span>
             </a>
           </li>
